@@ -126,7 +126,16 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
-    
+    // In ProductController.php
+public function show($id)
+{
+    // Find the product by its ID
+    $product = Product::with(['category', 'subcategory', 'brand'])->findOrFail($id);
+
+    // Return the product details view with the product data
+    return view('admin.product.show_product', compact('product'));
+}
+
 
     public function destroy($id)
     {

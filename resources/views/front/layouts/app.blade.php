@@ -115,7 +115,7 @@
                             @if($category->subcategories->isNotEmpty())
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 @foreach($category->subcategories as $subCategory)
-                                <li><a class="dropdown-item nav-link" href="#">{{ $subCategory->name}}</a></li>
+                                <li><a class="dropdown-item nav-link" href="{{ route('front.shop', ['categorySlug' => $category->slug, 'subCategorySlug' => $subCategory->slug]) }}">{{ $subCategory->name}}</a></li>
                                 @endforeach
                             </ul>
                             @endif
@@ -154,8 +154,8 @@
                     <div class="footer-card">
                         <h3>Important Links</h3>
                         <ul>
-                            <li><a href="about-us.php" title="About">About</a></li>
-                            <li><a href="contact-us.php" title="Contact Us">Contact Us</a></li>
+                            <li><a href="#" title="About">About</a></li>
+                            <li><a href="#" title="Contact Us">Contact Us</a></li>
                             <li><a href="#" title="Privacy">Privacy</a></li>
                             <li><a href="#" title="Privacy">Terms & Conditions</a></li>
                             <li><a href="#" title="Privacy">Refund Policy</a></li>
@@ -167,7 +167,7 @@
                     <div class="footer-card">
                         <h3>My Account</h3>
                         <ul>
-                            <li><a href="#" title="Sell">Login</a></li>
+                            <li><a href="{{route('admin.login')}}" title="Sell">Login</a></li>
                             <li><a href="#" title="Advertise">Register</a></li>
                             <li><a href="#" title="Contact Us">My Orders</a></li>
                         </ul>

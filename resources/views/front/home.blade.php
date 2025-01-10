@@ -122,9 +122,9 @@
                     <div class="col-lg-3">
                         <div class="cat-card">
                             <div class="left">
-                                @if($category->image != "")
-                                <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}"
-                                    class="img-fluid cat-image">
+                            @if($category->image != "")
+                               <img src="{{ asset('storage/' . $category->image) }}" alt="{{ $category->name }}" class="img-fluid cat-image">
+
                                 @endif
                             </div>
                             <div class="right">
@@ -193,7 +193,7 @@
                                 </br>
                                 <br>
                                 </br>
-                                <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
+                                <a class="whishlist" href="{{route('products.index')}}"><i class="far fa-heart"></i></a>
 
                                 <div class="product-action">
                                     <a class="btn btn-dark" href="#">
@@ -203,7 +203,7 @@
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="product.php">{{$product->title}}</a>
+                                <a class="h6 link" href="{{ route('products.show', $product->id) }}">{{$product->title}}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{$product->price}}</strong></span>
                                     @if($product->compare_price > 0)
