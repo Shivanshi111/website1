@@ -10,9 +10,10 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 
-
+Route::group(['middleware' => 'User.check'], function () {
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/search', [ShopController::class, 'index'])->name('front.shop');
+});
 
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'Admin.check'], function () {

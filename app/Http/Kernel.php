@@ -61,6 +61,7 @@ class Kernel extends HttpKernel
         'Admin' => \App\Http\Middleware\CheckUserRole::class, // Ensure this exists
         'guest' => \App\Http\Middleware\RedirectIfAuthenticated::class,
         'Admin.check' => \App\Http\Middleware\AdminRedirectIfAuthenticated::class, // Corrected alias
+        'User.check' => \App\Http\Middleware\AdminCheck::class,
         'password.confirm' => \Illuminate\Auth\Middleware\RequirePassword::class,
         'signed' => \App\Http\Middleware\ValidateSignature::class,
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
