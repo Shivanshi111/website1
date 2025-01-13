@@ -14,10 +14,10 @@ Route::group(['middleware' => 'User.check'], function () {
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/search', [ShopController::class, 'index'])->name('front.shop');
 });
-
+Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
 Route::group(['prefix' => 'admin'], function () {
     Route::group(['middleware' => 'Admin.check'], function () {
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+      
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
     });
     Route::group(['middleware' => 'Admin'], function () {
@@ -54,7 +54,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit'); 
     Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update'); 
     Route::get('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::get('/admin/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
  
     });
  
