@@ -9,40 +9,50 @@ use Illuminate\Support\Facades\Validator;
 
 class AdminLoginController extends Controller
 {
-    public function index(){
-        return view('admin.login');
+    public function index()
+    {
+        return view('admin.login'); // Show the login form
     }
-    public function authenticate(Request $request){
-        $validator = Validator::make($request->all(),[
+
+    public function authenticate(Request $request)
+    {
+        // Validate the login credentials
+        $validator = Validator::make($request->all(), [
             'email' => 'required|email',
             'password' => 'required'
         ]);
-        if ($validator->passes()) {
-            //Redirect back with proper errors
-          
-        
-    
-        // Handle successful login logic here
-        if (Auth::guard('admin')->attempt(['email' => $request->email, 'password'=>$request->password],$request->get('remember'))){ 
-            $admin = Auth::guard('admin')->user();
-            if($admin->role == 1){
-                return redirect()->route('admin.dashboard');
+
+        if ($validator->fails()) {
+            // Redirect back with validation errors
+            return redirect()
+                ->route('admin.login')
+                ->withErrors($validator)
+                ->withInput($request->only('email'));
+        }
+
+        // Attempt to authenticate the user
+        $credentials = $request->only('email', 'password');
+        $remember = $request->get('remember', false); // Check if "remember me" is set
+
+        if (Auth::attempt($credentials, $remember)) {
+            $admin = Auth::user(); // Get the authenticated user
+
+            // Check if the user has an admin role
+            if ($admin->role == 1) {
+                return redirect()->route('admin.dashboard'); // Redirect to admin dashboard
             }
-            else{
-                Auth::guard('admin')->logout();
-                return redirect()->route('admin.login')->with('error','you are not authorized to access admin panel.');    
+             else {
+                Auth::logout(); // Logout non-admin users
+                return redirect()
+                    ->route('admin.login')
+                    ->with('error', 'You are not authorized to access the admin panel.');
             }
-            
-            // Adjust the route as per your dashboard
         }
-        else{
-          return redirect()->route('admin.login')->with('error','Either Emai/Password is incorrect');  
-        }
+
+        // If authentication fails
+        return redirect()
+            ->route('admin.login')
+            ->with('error', 'Invalid email or password.')
+            ->withInput($request->only('email'));
     }
-        else{
-            return redirect()->route('admin.login')->withError($validator)->withInput($request->only('email'));
-        }
-    
-    }
-   
 }
