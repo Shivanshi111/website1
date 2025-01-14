@@ -10,17 +10,18 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 
-
+Route::group(['middleware' => 'User.check'], function () {
 Route::get('/',[FrontController::class,'index'])->name('front.home');
 Route::get('/search', [ShopController::class, 'index'])->name('front.shop');
-
-
+});
+Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
 Route::group(['prefix' => 'admin'], function () {
-    Route::group(['middleware' => 'Admin.guest'], function () {
-        Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
+    Route::group(['middleware' => 'Admin.check'], function () {
+      
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
     });
-    Route::group(['middleware' => 'Admin.auth'], function () {
+    Route::group(['middleware' => 'Admin'], function () {
+        
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard'); // Define the admin dashboard route
         Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout'); // Define the admin dashboard route
 
@@ -52,9 +53,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/products/store', [ProductController::class, 'store'])->name('products.store'); 
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit'); 
     Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update'); 
-    Route::get('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy'); 
-
+    Route::get('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+ 
     });
  
-    
 });

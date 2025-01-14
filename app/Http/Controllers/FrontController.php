@@ -14,4 +14,6 @@ class FrontController extends Controller
        $data['latestProducts'] = $latestProducts;
         return view('front.home',$data);
     }
+   
+
 }

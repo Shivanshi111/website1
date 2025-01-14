@@ -14,7 +14,8 @@ class HomeController extends Controller
     //   echo 'welcome'.$admin->name.'<a href="'.route('admin.logout').'">Logout</a>';
     }
     public function logout(){
-        Auth::guard('admin')->logout();
+        // Auth::guard('admin')->logout();
+        Auth::logout();
         return redirect()->route('admin.login');
     }
 }
