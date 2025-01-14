@@ -82,7 +82,9 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'en',  // Default locale set to English
+'fallback_locale' => 'en',  // Fallback locale (if translation is not available for the selected locale)
+
 
     /*
     |--------------------------------------------------------------------------
