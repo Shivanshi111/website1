@@ -9,6 +9,9 @@ use App\Http\Controllers\admin\BrandsController;
 use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
+use App\Http\Controllers\AuthController;
+
+Route::get('/register',[AuthController::class,'register'])->name('account.register');
 
 Route::group(['middleware' => 'User.check'], function () {
 Route::get('/',[FrontController::class,'index'])->name('front.home');
