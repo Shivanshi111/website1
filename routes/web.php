@@ -12,7 +12,17 @@ use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\CardController;
 use App\Http\Controllers\WishlistController;
+use Illuminate\Support\Facades\App;
+use Illuminate\Support\Facades\Session;
 
+Route::post('/set-locale', function (Illuminate\Http\Request $request) {
+    $locale = $request->input('locale');
+    if (in_array($locale, ['en', 'hi', 'pn'])) {
+        Session::put('locale', $locale);
+        App::setLocale($locale);
+    }
+    return redirect()->back();
+})->name('set.locale');
 
 Route::middleware('auth.redirect')->group(function () {
 Route::get('/user_login', [AuthController::class, 'login'])->name('account.login');

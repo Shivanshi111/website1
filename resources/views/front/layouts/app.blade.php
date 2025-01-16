@@ -67,6 +67,31 @@
     color: white; /* Ensure the text stays white on hover */
 }
 </style>
+<header class="bg-dark">
+    <div class="container">
+        <nav class="navbar navbar-expand-xl" id="navbar">
+            <button class="navbar-toggler menu-btn" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+                aria-expanded="false" aria-label="Toggle navigation">
+                <i class="navbar-toggler-icon fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <!-- Categories Section -->
+                </ul>
+                <!-- Language Selector -->
+                <form action="{{ route('set.locale') }}" method="POST" class="d-flex ms-auto">
+                    @csrf
+                    <select name="locale" class="form-select" onchange="this.form.submit()">
+                        <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
+                        <option value="hi" {{ app()->getLocale() == 'hi' ? 'selected' : '' }}>Hindi</option>
+                        <option value="pn" {{ app()->getLocale() == 'pn' ? 'selected' : '' }}>Punjabi</option>
+                    </select>
+                </form>
+            </div>
+        </nav>
+    </div>
+</header>
 
 <body data-instant-intensity="mousedown">
 
@@ -75,8 +100,8 @@
             <div class="row align-items-center py-3 d-none d-lg-flex justify-content-between">
                 <div class="col-lg-4 logo">
                     <a href="{{route('front.shop')}}" class="text-decoration-none">
-                        <span class="h1 text-uppercase text-primary bg-dark px-2">Online</span>
-                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">SHOP</span>
+                        <span class="h1 text-uppercase text-primary bg-dark px-2">{{ __('messages.Online') }}</span>
+                        <span class="h1 text-uppercase text-dark bg-primary px-2 ml-n1">{{ __('messages.SHOP') }}</span>
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">

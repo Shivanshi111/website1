@@ -1,6 +1,17 @@
 @extends('front.layouts.app')
 
 @section('content')
+@if(session('success'))
+         <div class="alert alert-success text-center">
+            {{ session('success') }}
+</div>
+@endif
+
+@if(session('error'))
+    <div class="alert alert-danger text-center">
+        {{ session('error') }}
+    </div>
+@endif
     <section class="section-5 pt-3 pb-3 mb-3 bg-white">
         <div class="container">
             <div class="light-font">
