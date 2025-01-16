@@ -179,6 +179,16 @@
                                 <div class="text-danger">{{ $message }}</div>
                                 @enderror
                             </div>
+                                <div class="mb-3">
+                                <label for="featured">Featured</label>
+                                <select name="featured" id="featured" class="form-control">
+                                    <option value="1" {{ $product->featured == 1 ? 'selected' : '' }}>Yes</option>
+                                    <option value="0" {{ $product->featured == 0 ? 'selected' : '' }}>No</option>
+                                </select>
+                                @error('featured')
+                                <div class="text-danger">{{ $message }}</div>
+                                @enderror
+                            </div>
                         </div>
                     </div>
                     <button type="submit" class="btn btn-primary w-100 mt-3">Update Product</button>

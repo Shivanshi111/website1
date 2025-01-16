@@ -16,13 +16,13 @@ class AdminCheck
      */
     public function handle(Request $request, Closure $next): Response
     {
-        if (Auth::check()) {
-            if (Auth::user()->role === 1) {
-                return redirect()->route('admin.dashboard'); 
-            }
+        // if (Auth::check()) {
+        //     if (Auth::user()->role === 1) {
+        //         return redirect()->route('admin.dashboard'); 
+        //     }
 
-            return redirect()->route('front.home'); 
-        }
+        //     return redirect()->route('front.home'); 
+        // }
 
         return $next($request);
     }

@@ -11,17 +11,17 @@ use Symfony\Component\HttpFoundation\Response;
 
 class AdminRedirectIfAuthenticated
 {
-    public function handle($request, Closure $next): Response
-    {
-        if (!Auth::check() ) {
-            return $next($request);
-        } elseif(Auth::check() && Auth::user()->role == 1){
-            return redirect()->route('admin.dashboard');
-        } else {
-            return redirect()->route('front.home');
-        }
+    // public function handle($request, Closure $next): Response
+    // {
+    //     if (!Auth::check() ) {
+    //         return $next($request);
+    //     } elseif(Auth::check() && Auth::user()->role == 1){
+    //         return redirect()->route('admin.dashboard');
+    //     } else {
+    //         return redirect()->route('front.home');
+    //     }
         
-        // return $next($request);
-    }
+    //     return $next($request);
+    // }
 }
 

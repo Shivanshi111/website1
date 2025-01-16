@@ -39,5 +39,20 @@ class Product extends Model
     {
         return $this->belongsTo(Brand::class, 'brand_id');
     }
-    
+
+    public function product_images()
+    {
+        return $this->hasMany(ProductImage::class, 'product_id');
+    }
+
+    public function carts()
+    {
+        return $this->hasMany(Cart::class);
+    }
+
+    public function wishlists()
+    {
+        return $this->hasMany(wishlists::class);
+    }
+
 }

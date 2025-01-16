@@ -14,6 +14,15 @@ class FrontController extends Controller
        $data['latestProducts'] = $latestProducts;
         return view('front.home',$data);
     }
+//     public function showFeaturedProducts()
+// {
+//     // Fetch featured products from the database
+//     $featuredProducts = Product::where('is_featured', 1)->get(); // Assuming 'is_featured' is a column indicating featured products
+
+//     // Return the view and pass the featured products
+//     return view('your.view.name', compact('featuredProducts'));
+// }
+
    
 
 }

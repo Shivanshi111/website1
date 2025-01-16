@@ -111,7 +111,7 @@
                                 <div class="card product-card">
                                     <div class="product-image position-relative">
                                         @if($product->image != "")
-                                            <a href="#" class="product-img"><img class="card-img-top"
+                                            <a href="{{ route('products.show', $product->slug) }}" class="product-img"><img class="card-img-top"
                                                     src="{{ asset('storage/'.$product->image) }}" alt=""></a>
                                         @endif
                                         <a class="whishlist" href="#"><i class="far fa-heart"></i></a>

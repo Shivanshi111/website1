@@ -68,5 +68,16 @@ class ShopController extends Controller
     
         return view('front.shop', compact('categories', 'brands', 'products', 'brandsArray','priceMin', 'priceMax','sort'));
     }
+
+      public function showFeaturedProducts($slug){
+      
+    $product = Product::where('slug', $slug)->first();
     
+    return view('front.account.product', compact('product'));
+    if (!$product) {
+        return abort(404, 'Product not found.');
+    }
+
+    return view('front.product', compact('product'));
 }
+      }

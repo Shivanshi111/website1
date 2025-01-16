@@ -54,6 +54,7 @@
 
     <!-- Fav Icon -->
     <link rel="shortcut icon" type="image/x-icon" href="#" />
+    <meta name="csrf-token" content="{{csrf_token()}}">
 </head>
 <style>
 /* Subcategory links (dropdown items) color to white */
@@ -80,7 +81,7 @@
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
                     <a href="account.php" class="nav-link text-dark">My Account</a>
-                    <form action="">
+                    <form action=""> 
                         <div class="input-group">
                             <input type="text" placeholder="Search For Products" class="form-control"
                                 aria-label="Amount (to the nearest dollar)">
@@ -115,7 +116,7 @@
                             @if($category->subcategories->isNotEmpty())
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 @foreach($category->subcategories as $subCategory)
-                                <li><a class="dropdown-item nav-link" href="{{ route('front.shop', ['categorySlug' => $category->slug, 'subCategorySlug' => $subCategory->slug]) }}">{{ $subCategory->name}}</a></li>
+                                <li><a class="dropdown-item nav-link" href="">{{ $subCategory->name}}</a></li>
                                 @endforeach
                             </ul>
                             @endif
@@ -168,7 +169,12 @@
                         <h3>My Account</h3>
                         <ul>
                             <li><a href="{{route('admin.login')}}" title="Sell">Login</a></li>
-                            <li><a href="#" title="Advertise">Register</a></li>
+                            <li><a href="{{route('account.register')}}" title="Advertise">Register</a></li>
+                            <form action="{{ route('user_logout') }}" method="POST">
+                              @csrf
+                            <button type="submit" >Logout</button>
+                             </form>
+
                             <li><a href="#" title="Contact Us">My Orders</a></li>
                         </ul>
                     </div>
@@ -212,6 +218,31 @@
                 navbar.classList.remove("sticky");
             }
         }
+        $.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
+});
+<script type="text/javascript">
+function addToWishlist(productId) {
+    $.ajax({
+        url: '/wishlist/add',
+        method: 'POST',
+        data: {
+            id: productId,
+            _token: '{{ csrf_token() }}' // Include CSRF token
+        },
+        success: function(response) {
+            alert(response.message); // Display the success or failure message
+        },
+        error: function(xhr, status, error) {
+            alert("An error occurred");
+        }
+    });
+}
+
+</script>
+
     </script>
 </body>
 

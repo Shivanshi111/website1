@@ -185,7 +185,7 @@
                         <div class="cat-card">
                             <div class="product-image position-relative">
                                 @if($product->image != "")
-                                <a href="" class="product-img">
+                                <a href="{{ route('products.show', $product->slug) }}" class="product-img">
                                     <img class="cat-image" src="{{ asset('storage/'.$product->image)}}" alt="">
                                 </a>
                                 @endif
@@ -196,14 +196,16 @@
                                 <a class="whishlist" href="{{route('products.index')}}"><i class="far fa-heart"></i></a>
 
                                 <div class="product-action">
-                                    <a class="btn btn-dark" href="#">
-                                        <i class="fa fa-shopping-cart"></i> Add To Cart
-                                    </a>
-
+                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                                <a href="{{route('front.cart')}}"  class="btn btn-primary">Go To Cart</a>
+                                 </div>
+                                 <br>
+                                  <div href="{{route('front.home')}}" >
+                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;Wishlist</a>
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="{{ route('products.show', $product->id) }}">{{$product->title}}</a>
+                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{$product->title}}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{$product->price}}</strong></span>
                                     @if($product->compare_price > 0)
@@ -218,7 +220,7 @@
                 </div>
             </div>
         </section>
-
+<!-- 
         <style>
         .cat-image {
             width: 100%;
@@ -308,9 +310,7 @@
                 margin-bottom: 20px;
             }
         }
-        </style>
-
-
+        </style> -->
 
 <section class="section-4 pt-5">
             <div class="container">
@@ -324,7 +324,7 @@
                         <div class="cat-card">
                             <div class="product-image position-relative">
                                 @if($product->image != "")
-                                <a href="" class="product-img">
+                                <a href="{{ route('products.show', $product->slug) }}" class="product-img">
                                     <img class="cat-image" src="{{ asset('storage/'.$product->image)}}" alt="">
                                 </a>
                                 @endif
@@ -334,15 +334,16 @@
                                 </br>
                                 <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
-                                <div class="product-action">
-                                    <a class="btn btn-dark" href="#">
-                                        <i class="fa fa-shopping-cart"></i> Add To Cart
-                                    </a>
-
+                                <div class="product-action" href="{{route('front.cart')}}">
+                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+    </div>
+    <br>
+    <div href="{{route('front.home')}}" >
+                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;Wishlist</a>
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="product.php">{{$product->title}}</a>
+                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{$product->title}}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{$product->price}}</strong></span>
                                     @if($product->compare_price > 0)
@@ -357,5 +358,93 @@
                 </div>
             </div>
         </section>
-        <!-- </main> -->
+        <section class="wishlist-section pt-5">
+    <div class="container">
+        <div class="section-title">
+            <h2>Wishlist</h2>
+        </div>
+
+        @if(auth()->check() && auth()->user()->wishlists->isNotEmpty())
+    <div class="row">
+        @foreach(auth()->user()->wishlists as $product)
+            <div class="col-md-3">
+                <div class="cat-card">
+                    <div class="product-image position-relative">
+                        @if($product->image)
+                            <a href="{{ route('products.show', $product->slug) }}" class="product-img">
+                                <img class="cat-image" src="{{ asset('storage/'.$product->image) }}" alt="{{ $product->title }}">
+                            </a>
+                        @endif
+                    </div>
+                    <div class="card-body text-center mt-3">
+                        <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{ $product->title }}</a>
+                        <div class="price mt-2">
+                            <span class="h5"><strong>${{ $product->price }}</strong></span>
+                            @if($product->compare_price > 0)
+                                <span class="h6 text-underline"><del>${{ $product->compare_price }}</del></span>
+                            @endif
+                        </div>
+                        <form action="{{ route('wishlist.remove', $product->id) }}" method="POST" style="display:inline-block;">
+                            @csrf
+                            @method('DELETE')
+                            <button type="submit" class="btn btn-danger btn-sm mt-2">Remove</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        @endforeach
+    </div>
+@else
+    <p>Your wishlist is empty.</p>
+@endif
+
+    </div>
+</section>
+       <!-- </main> -->
+ @endsection
+ @section('customJs')
+<script type="text/javascript">
+function addToCart(productId) {
+    $.ajax({
+        url: '{{ route("addToCart") }}',  // Replace with the actual route for adding to cart
+        method: 'POST',
+        data: {
+            id: productId,
+            _token: '{{ csrf_token() }}'
+        },
+        success: function(response) {
+            if (response.status) {
+                alert(response.message); // Product added successfully
+                // Update cart count if needed
+                $('#cart-count').text(response.cartCount);
+            } else {
+                alert(response.message); // Product already in cart
+            }
+        },
+        error: function(xhr, status, error) {
+            alert("An error occurred");
+        }
+    });
+}
+
+
+</script>
+<script type="text/javascript">
+function addToWishlist(productId) {
+    $.ajax({
+        url: '/wishlist/add',
+        method: 'POST',
+        data: {
+            id: productId,
+            _token: '{{ csrf_token() }}' // Include CSRF token
+        },
+        success: function(response) {
+            alert(response.message); // Display the success or failure message
+        },
+        error: function(xhr, status, error) {
+            alert("An error occurred");
+        }
+    });
+}
+</script>
  @endsection

@@ -10,23 +10,39 @@ use App\Http\Controllers\admin\ProductController;
 use App\Http\Controllers\FrontController;
 use App\Http\Controllers\ShopController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\CardController;
+use App\Http\Controllers\WishlistController;
 
+
+Route::middleware('auth.redirect')->group(function () {
+Route::get('/user_login', [AuthController::class, 'login'])->name('account.login');
+Route::post('/user_login', [AuthController::class, 'loginSubmit'])->name('login.submit');
 Route::get('/register',[AuthController::class,'register'])->name('account.register');
+Route::post('/register', [AuthController::class, 'registerSubmit'])->name('register.submit');
+Route::post('/user_logout', [AuthController::class, 'logout'])->name('user_logout');
+});
 
-Route::group(['middleware' => 'User.check'], function () {
+Route::group(['middleware' => 'auth.redirect'], function () {
 Route::get('/',[FrontController::class,'index'])->name('front.home');
-Route::get('/search', [ShopController::class, 'index'])->name('front.shop');
+Route::get('/shop', [ShopController::class, 'index'])->name('front.shop');
+Route::get('/product/{slug}', [ShopController::class, 'showFeaturedProducts'])->name('products.show');
+
+
+Route::post('/add-to-cart', [CardController::class, 'addToCart'])->name('addToCart');
+Route::get('/cart', [CardController::class, 'cart'])->name('front.cart');
+Route::delete('/cart/remove/{id}', [CardController::class, 'removeFromCart'])->name('cart.remove');
+
 });
 Route::get('/login', [AdminLoginController::class, 'index'])->name('admin.login');
 Route::group(['prefix' => 'admin'], function () {
-    Route::group(['middleware' => 'Admin.check'], function () {
+    Route::group(['middleware' => 'auth.redirect'], function () {
       
         Route::post('/authenticate', [AdminLoginController::class, 'authenticate'])->name('admin.authenticate');
     });
     Route::group(['middleware' => 'Admin'], function () {
         
         Route::get('/dashboard', [HomeController::class, 'index'])->name('admin.dashboard'); // Define the admin dashboard route
-        Route::get('/logout', [HomeController::class, 'logout'])->name('admin.logout'); // Define the admin dashboard route
+        Route::post('/logout', [HomeController::class, 'logout'])->name('admin.logout'); // Define the admin dashboard route
 
         //category routes
         Route::get('/categories/list',[CategoryController::class,'index'])->name('categories.index');
@@ -57,8 +73,14 @@ Route::group(['prefix' => 'admin'], function () {
     Route::get('/products/{id}/edit', [ProductController::class, 'edit'])->name('products.edit'); 
     Route::put('/products/{id}/update', [ProductController::class, 'update'])->name('products.update'); 
     Route::get('/products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
-    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show');
+    Route::get('/products/{id}', [ProductController::class, 'show'])->name('products.show2');
  
     });
  
 });
+
+
+Route::post('/wishlist/add', [WishlistController::class, 'addToWishlist'])->name('wishlist.add');
+Route::get('/wishlist', [WishlistController::class, 'viewWishlist'])->name('wishlist.view');
+Route::delete('/wishlist/remove/{id}', [WishlistController::class, 'removeFromWishlist'])->name('wishlist.remove');
+
