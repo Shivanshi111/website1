@@ -54,5 +54,20 @@ class Product extends Model
     {
         return $this->hasMany(Wishlist::class);
     }
+    public function translations()
+{
+    return $this->hasMany(ProductTranslation::class);
+}
+
+public function getTranslatedNameAttribute()
+{
+    return $this->translations->firstWhere('locale', app()->getLocale())?->name ?? $this->title;
+}
+
+public function getTranslatedDescriptionAttribute()
+{
+    return $this->translations->firstWhere('locale', app()->getLocale())?->description ?? $this->description;
+}
+
 
 }

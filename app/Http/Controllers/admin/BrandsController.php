@@ -10,6 +10,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Brand;
 use Illuminate\Support\Str;
+use App\Models\BrandTranslation;
+use Stichoza\GoogleTranslate\GoogleTranslate;
+
 
 class BrandsController extends Controller
 {
@@ -39,16 +42,32 @@ class BrandsController extends Controller
         $brand->slug = Str::slug($request->name);
         $brand->status = $request->status;
         $brand->save();
-
+        $this->createTranslations($brand, $request->name);
         return redirect()->route('brand.index')->with('success', 'Brand created successfully.');
     }
+    private function createTranslations($brand, $name)
+{
+    $translator = new GoogleTranslate();
+    $languages = ['hi', 'pa'];
+
+    foreach ($languages as $locale) {
+        $translator->setTarget($locale);
+        $translatedName = $translator->translate($name);
+
+        BrandTranslation::updateOrCreate(
+            ['brand_id' => $brand->id, 'locale' => $locale],
+            ['name' => $translatedName]
+        );
+    }
+}
 
 
 
     public function edit($id)
     {
         $brand = Brand::findOrFail($id);
-        return view('admin.brand.brand_edit', compact('brand'));
+        $translations = $brand->translations()->get();
+        return view('admin.brand.brand_edit', compact('brand','translations'));
     }
 
     public function update(Request $request, $id)
@@ -68,9 +87,25 @@ class BrandsController extends Controller
         $brand->slug = $slug;
         $brand->status = $request->status;
         $brand->save();
-
+        $this->createTranslations($brand, $request->name);
         return redirect()->route('brand.index')->with('success', 'brand updated successfully.');
     }
+    private function updateTranslations($brand, $name)
+{
+    $translator = new GoogleTranslate();
+    $languages = ['hi', 'pa'];
+
+    foreach ($languages as $locale) {
+        $translator->setTarget($locale);
+        $translatedName = $translator->translate($name);
+
+        BrandTranslation::updateOrCreate(
+            ['brand_id' => $brand->id, 'locale' => $locale],
+            ['name' => $translatedName]
+        );
+    }
+}
+
 
     public function destroy($id)
     {

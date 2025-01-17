@@ -2,7 +2,41 @@
 
 return [
     'Online'=>"Online",
-    'SHOP'=>'SHOP'
+    'SHOP'=>'SHOP',
+    'My Account'=>'My Account',
+    'Search For Products'=>'Search For Product',
+    'About'=>'About',
+    'Contact Us'=>'Contact Us',
+    'Privacy'=>'Privacy',
+    'Terms & Conditions'=>'Terms & Conditions',
+    'Refund Policy'=>'Refund Policy',
+    'Login'=>'Login',
+    'Register'=>'Register',
+    'Logout'=>'Logout',
+    'My Orders'=>'My Orders',
+    'Kids Fashion'=>'Kids Fashion',
+    'Lorem rebum magna amet lorem magna erat diam stet. Sadips duo stet amet amet ndiam elitr ipsum diam'=>'Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
+                                    stet amet amet ndiam elitr ipsum diam',
+    'Shop Now'=>'Shop Now',   
+    'Womens Fashion'=>'Womens Fashion',  
+    'Shop Online at Flat 70% off on Branded Clothes'=>'Shop Online at Flat 70% off on Branded Clothes',       
+    'Quality Product'=>'Quality Product',  
+    'Free Shipping'=>'Free Shipping',     
+    '14-Day Return'=>'14-Day Return', 
+    '24/7 Support'=>'24/7 Support',  
+    'Categories'=>'Categories',     
+    'Featured Products'=>'Featured Products',     
+    'ADD TO CART'=>'ADD TO CART',
+    'Go To Cart'=>'Go To Cart',
+    'Wishlist'=>'Wishlist',
+    'Leatest Products'=>'Leatest Products',
+    'Your wishlist is empty.'=>'Your wishlist is empty.',
+    'No products found.'=>'No products found.',
+    'Price'=>'Price',
+    'Brand'=>'Brand',
+    'Latest'=>'Latest',
+    'Price High'=>'Price High',
+    'Price Low'=>'Price Low',
 ];
 
 ?>

@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use App\Models\Category;
 use Illuminate\Support\Str;
+use App\Models\CategoryTranslation;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class CategoryController extends Controller
 {
@@ -43,13 +45,32 @@ class CategoryController extends Controller
         $category->image = $imagePath;
         $category->save();
 
+        $this->createTranslations($category, $request->name);
+
         return redirect()->route('categories.index')->with('success', 'Category has been created successfully');
+    }
+    private function createTranslations($category, $name)
+    {
+        $translator = new GoogleTranslate();
+        $languages = ['hi', 'pa'];  // Specify the languages you want to support (e.g., Hindi, Punjabi)
+
+        // Translate the category name to each language and store in category_translations table
+        foreach ($languages as $locale) {
+            $translator->setTarget($locale);
+            $translatedName = $translator->translate($name);
+
+            CategoryTranslation::updateOrCreate(
+                ['category_id' => $category->id, 'locale' => $locale],
+                ['name' => $translatedName]
+            );
+        }
     }
 
     public function edit($id)
     {
         $category = Category::findOrFail($id);
-        return view('admin.category.category_edit', compact('category'));
+        $translations = $category->translations;
+        return view('admin.category.category_edit', compact('category','translations'));
     }
 
     public function update(Request $request, $id)
@@ -82,8 +103,26 @@ class CategoryController extends Controller
         $category->image = $imagePath;
         $category->save();
 
+        $this->updateTranslations($category, $request->name);
+
         return redirect()->route('categories.index')->with('success', 'Category updated successfully.');
     }
+    private function updateTranslations($category, $name)
+    {
+        $translator = new GoogleTranslate();
+        $languages = ['hi', 'pa']; // Languages to update (e.g., Hindi, Punjabi)
+
+        foreach ($languages as $locale) {
+            $translator->setTarget($locale);
+            $translatedName = $translator->translate($name);
+
+            CategoryTranslation::updateOrCreate(
+                ['category_id' => $category->id, 'locale' => $locale],
+                ['name' => $translatedName]
+            );
+        }
+    }
+    
 
     public function destroy($id)
     {

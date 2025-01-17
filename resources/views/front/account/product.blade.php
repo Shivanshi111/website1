@@ -20,7 +20,7 @@
                     <div id="product-carousel" class="carousel slide" data-bs-ride="carousel">
                         <div class="carousel-inner bg-light">
                             <div class="carousel-item">
-                                <img class="w-100 h-100" src="" alt="Image">
+                                <img class="w-50 h-50" src="" alt="Image">
                             </div>
                               @if($product->image != "")
                                 <a href="{{ route('products.show', $product->slug) }}" class="product-img">
@@ -44,7 +44,7 @@
                 </div>
                 <div class="col-md-7">
                     <div class="bg-light right">
-                        <h1>{{$product->title}}</h1>
+                        <h1>{{ $product->translatedName }}</h1>
                         <div class="d-flex mb-3">
                             <div class="text-primary mr-2">
                                 <small class="fas fa-star"></small>
@@ -60,10 +60,10 @@
                                     <span class="h1 text-underline"><del>${{$product->compare_price}}</del></span>
                                     @endif</h1> </div>
 
-                        <p>{{$product->description}}</p>
-                        <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
-                        <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;Wislist</a>
-                        <a href="{{route('front.cart')}}"  class="btn btn-primary">Go To Cart</a>
+                        <p>{{ $product->translatedDescription }}</p>
+                        <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.ADD TO CART') }}</a>
+                        <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.Wishlist') }}</a>
+                        <a href="{{route('front.cart')}}"  class="btn btn-primary">{{ __('messages.Go To Cart') }}</a>
                     </div>
                 </div>
 

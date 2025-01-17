@@ -17,7 +17,7 @@
             <!-- Sidebar -->
             <div class="col-md-3 sidebar">
                 <div class="sub-title">
-                    <h2>Categories</h2>
+                    <h2>{{ __('messages.Categories') }}</h2>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -30,7 +30,7 @@
                                                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                                                     data-bs-target="#collapseOne-{{$key}}" aria-expanded="false"
                                                     aria-controls="collapseOne-{{$key}}">
-                                                    {{$category->name}}
+                                                    {{ $category->translations->firstWhere('locale', app()->getLocale()) ? $category->translations->firstWhere('locale', app()->getLocale())->name : $category->name }}
                                                 </button>
                                             </h2>
                                         @else
@@ -45,7 +45,7 @@
                                                         @foreach($category->subcategories as $subCategory)
                                                             <a href="{{ route('front.shop', ['categorySlug' => $category->slug, 'subCategorySlug' => $subCategory->slug]) }}"
                                                                 class="nav-item nav-link">
-                                                                {{ $subCategory->name }}
+                                                                {{ $subCategory->getTranslatedNameAttribute() }}
                                                             </a>
                                                         @endforeach
                                                     </div>
@@ -60,27 +60,34 @@
                 </div>
                 <!-- Brand Filter -->
                 <div class="sub-title mt-5">
-                    <h2>Brand</h2>
+    <h2>{{ __('messages.Brand') }}</h2>
+</div>
+<div class="card">
+    <div class="card-body">
+        @if($brands->isNotEmpty())
+            @foreach($brands as $brand)
+                <div class="form-check mb-2">
+                    <input 
+                        {{ in_array($brand->id, $brandsArray) ? 'checked' : '' }} 
+                        class="form-check-input brand-label" 
+                        type="checkbox" 
+                        name="brand[]" 
+                        value="{{ $brand->id }}" 
+                        id="brand-{{ $brand->id }}">
+                    <label class="form-check-label" for="brand-{{ $brand->id }}">
+                        {{-- Fetch the translated name based on the locale --}}
+                        {{ $brand->translations->firstWhere('locale', app()->getLocale())?->name ?? $brand->name }}
+                    </label>
                 </div>
-                <div class="card">
-                    <div class="card-body">
-                        @if($brands->isNotEmpty())
-                            @foreach($brands as $brand)
-                                <div class="form-check mb-2">
-                                    <input {{(in_array($brand->id, $brandsArray)) ? 'checked': ''}} class="form-check-input brand-label" type="checkbox" name="brand[]"
-                                        value="{{$brand->id}}" id="brand-{{$brand->id}}">
-                                    <label class="form-check-label" for="brand-{{$brand->id}}">
-                                        {{$brand->name}}
-                                    </label>
-                                </div>
-                            @endforeach
-                        @endif
-                    </div>
-                </div>
+            @endforeach
+        @endif
+    </div>
+</div>
+
 
                 <!-- Price Filter -->
                 <div class="sub-title mt-5">
-                    <h2>Price</h2>
+                    <h2>{{__('messages.Price')}}</h2>
                 </div>
                 <div class="card">
                     <div class="card-body">
@@ -96,9 +103,9 @@
                         <div class="d-flex align-items-center justify-content-end mb-4">
                             <div class="ml-2">
                             <select name="sort" id="sort" class="form-control">
-    <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>Latest</option>
-    <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>Price High</option>
-    <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>Price Low</option>
+    <option value="latest" {{ $sort == 'latest' ? 'selected' : '' }}>{{__('messages.Latest')}}</option>
+    <option value="price_desc" {{ $sort == 'price_desc' ? 'selected' : '' }}>{{__('messages.Price High')}}</option>
+    <option value="price_asc" {{ $sort == 'price_asc' ? 'selected' : '' }}>{{__('messages.Price Low')}}</option>
 </select>
                             </div>
                         </div>
@@ -117,12 +124,12 @@
                                         <a class="whishlist" href="#"><i class="far fa-heart"></i></a>
                                         <div class="product-action">
                                             <a class="btn btn-dark" href="#">
-                                                <i class="fa fa-shopping-cart"></i> Add To Cart
+                                                <i class="fa fa-shopping-cart"></i> {{ __('messages.ADD TO CART') }}
                                             </a>
                                         </div>
                                     </div>
                                     <div class="card-body text-center mt-3">
-                                        <a class="h6 link" href="#">{{$product->title}}</a>
+                                        <a class="h6 link" href="#">{{ $product->translatedName }}</a>
                                         <div class="price mt-2">
                                             <span class="h5"><strong>${{$product->price}}</strong></span>
                                             @if($product->compare_price > 0)
@@ -134,7 +141,7 @@
                             </div>
                         @endforeach
                     @else
-                        <p class="text-center">No products found.</p>
+                        <p class="text-center">{{__('messages.No products found.')}}</p>
                     @endif
                 </div>
             </div>

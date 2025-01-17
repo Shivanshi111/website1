@@ -85,7 +85,7 @@
                     <select name="locale" class="form-select" onchange="this.form.submit()">
                         <option value="en" {{ app()->getLocale() == 'en' ? 'selected' : '' }}>English</option>
                         <option value="hi" {{ app()->getLocale() == 'hi' ? 'selected' : '' }}>Hindi</option>
-                        <option value="pn" {{ app()->getLocale() == 'pn' ? 'selected' : '' }}>Punjabi</option>
+                        <option value="pa" {{ app()->getLocale() == 'pa' ? 'selected' : '' }}>Punjabi</option>
                     </select>
                 </form>
             </div>
@@ -105,10 +105,10 @@
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-                    <a href="account.php" class="nav-link text-dark">My Account</a>
+                    <a href="account.php" class="nav-link text-dark">{{ __('messages.My Account') }}</a>
                     <form action=""> 
                         <div class="input-group">
-                            <input type="text" placeholder="Search For Products" class="form-control"
+                            <input type="text" placeholder="{{ __('messages.Search For Products') }}" class="form-control"
                                 aria-label="Amount (to the nearest dollar)">
                             <span class="input-group-text">
                                 <i class="fa fa-search"></i>
@@ -136,12 +136,13 @@
                         <li class="nav-item dropdown">
                             <button class="btn btn-dark dropdown-toggle" data-bs-toggle="dropdown"
                                 aria-expanded="false">
-                                {{ $category->name}}
+                                {{ $category->translations->firstWhere('locale', app()->getLocale()) ? $category->translations->firstWhere('locale', app()->getLocale())->name : $category->name }}
+
                             </button>
                             @if($category->subcategories->isNotEmpty())
                             <ul class="dropdown-menu dropdown-menu-dark">
                                 @foreach($category->subcategories as $subCategory)
-                                <li><a class="dropdown-item nav-link" href="">{{ $subCategory->name}}</a></li>
+                                <li><a class="dropdown-item nav-link" href="">{{ $subCategory->getTranslatedNameAttribute() }}</a></li>
                                 @endforeach
                             </ul>
                             @endif
@@ -180,11 +181,11 @@
                     <div class="footer-card">
                         <h3>Important Links</h3>
                         <ul>
-                            <li><a href="#" title="About">About</a></li>
-                            <li><a href="#" title="Contact Us">Contact Us</a></li>
-                            <li><a href="#" title="Privacy">Privacy</a></li>
-                            <li><a href="#" title="Privacy">Terms & Conditions</a></li>
-                            <li><a href="#" title="Privacy">Refund Policy</a></li>
+                            <li><a href="#" title="About">{{ __('messages.About') }}</a></li>
+                            <li><a href="#" title="Contact Us">{{ __('messages.Contact Us') }}</a></li>
+                            <li><a href="#" title="Privacy">{{ __('messages.Privacy') }}</a></li>
+                            <li><a href="#" title="Privacy">{{ __('messages.Terms & Conditions') }}</a></li>
+                            <li><a href="#" title="Privacy">{{ __('messages.Refund Policy') }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -193,14 +194,14 @@
                     <div class="footer-card">
                         <h3>My Account</h3>
                         <ul>
-                            <li><a href="{{route('admin.login')}}" title="Sell">Login</a></li>
-                            <li><a href="{{route('account.register')}}" title="Advertise">Register</a></li>
+                            <li><a href="{{route('account.login')}}" title="Sell">{{ __('messages.Login') }}</a></li>
+                            <li><a href="{{route('account.register')}}" title="Advertise">{{ __('messages.Register') }}</a></li>
                             <form action="{{ route('user_logout') }}" method="POST">
                               @csrf
-                            <button type="submit" >Logout</button>
+                            <button type="submit" >{{ __('messages.Logout') }}</button>
                              </form>
 
-                            <li><a href="#" title="Contact Us">My Orders</a></li>
+                            <li><a href="#" title="Contact Us">{{ __('messages.My Orders') }}</a></li>
                         </ul>
                     </div>
                 </div>

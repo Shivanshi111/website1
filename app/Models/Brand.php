@@ -16,4 +16,13 @@ class Brand extends Model
     {
         return $this->hasMany(Product::class);
     }
+    public function translations()
+    {
+        return $this->hasMany(BrandTranslation::class);
+    }
+
+    public function getTranslatedNameAttribute()
+    {
+        return $this->translations->firstWhere('locale', app()->getLocale())?->name ?? $this->name;
+    }
 }

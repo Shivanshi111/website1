@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Session;
 
 Route::post('/set-locale', function (Illuminate\Http\Request $request) {
     $locale = $request->input('locale');
-    if (in_array($locale, ['en', 'hi', 'pn'])) {
+    if (in_array($locale, ['en', 'hi', 'pa'])) {
         Session::put('locale', $locale);
         App::setLocale($locale);
     }

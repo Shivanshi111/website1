@@ -9,6 +9,8 @@ use App\Models\Subcategories;
 use App\Models\Brand;
 use App\Models\Product;
 use Illuminate\Support\Str;
+use App\Models\ProductTranslation;
+use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class ProductController extends Controller
 {
@@ -80,8 +82,26 @@ class ProductController extends Controller
            
             $product->save();
 
+            $this->createTranslations($product, $request->title, $request->description);
             return redirect()->route('products.index')->with('success', 'Sub Category has been created successfully');
         } 
+        private function createTranslations($product, $name, $description = null)
+        {
+            $translator = new GoogleTranslate();
+            $languages = ['hi', 'pa']; // Languages to support
+    
+            foreach ($languages as $locale) {
+                $translator->setTarget($locale);
+                $translatedName = $translator->translate($name);
+                $translatedDescription = $description ? $translator->translate($description) : null;
+    
+                ProductTranslation::updateOrCreate(
+                    ['product_id' => $product->id, 'locale' => $locale],
+                    ['name' => $translatedName, 'description' => $translatedDescription]
+                );
+            }
+        }
+    
     
 
     // Show the form for editing an existing product
@@ -91,8 +111,9 @@ class ProductController extends Controller
         $categories = Category::all();
         $subcategories = Subcategories::all();
         $brands = Brand::all();
+        $translations = $product->translations()->get();  
 
-        return view('admin.product.edit_product', compact('product', 'categories', 'subcategories', 'brands'));
+        return view('admin.product.edit_product', compact('product', 'categories', 'subcategories', 'brands','translations'));
     }
 
     public function update(Request $request, $id)
@@ -123,9 +144,11 @@ class ProductController extends Controller
             $product->image = $request->file('image')->store('product_images', 'public');
             $product->save();
         }
-
+        $this->createTranslations($product, $request->title, $request->description);
         return redirect()->route('products.index')->with('success', 'Product updated successfully.');
     }
+
+  
     // In ProductController.php
 public function show($id)
 {

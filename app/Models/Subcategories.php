@@ -22,6 +22,18 @@ public function products()
         return $this->hasMany(Product::class, 'subcategory_id');
     }
 
+    public function translations()
+    {
+        return $this->hasMany(SubcategoryTranslation::class, 'subcategory_id', 'id');
+    }
+    
+
+    // Optional: For getting the translated name based on current locale
+    public function getTranslatedNameAttribute()
+    {
+        return $this->translations->firstWhere('locale', app()->getLocale())?->name ?? $this->name;
+    }
+
 }
 
 

@@ -28,10 +28,10 @@
 
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3">
-                                <h1 class="display-4 text-white mb-3">Kids Fashion</h1>
-                                <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
-                                    stet amet amet ndiam elitr ipsum diam</p>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                <h1 class="display-4 text-white mb-3">{{ __('messages.Kids Fashion') }}</h1>
+                                <p class="mx-md-5 px-5">{{ __('messages.Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
+                                    stet amet amet ndiam elitr ipsum diam') }}</p>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">{{ __('messages.Shop Now') }}</a>
                             </div>
                         </div>
                     </div>
@@ -47,10 +47,10 @@
 
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3">
-                                <h1 class="display-4 text-white mb-3">Womens Fashion</h1>
-                                <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
-                                    stet amet amet ndiam elitr ipsum diam</p>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                <h1 class="display-4 text-white mb-3">{{ __('messages.Womens Fashion') }}</h1>
+                                <p class="mx-md-5 px-5">{{ __('messages.Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
+                                    stet amet amet ndiam elitr ipsum diam') }}</p>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">{{ __('messages.Shop Now') }}</a>
                             </div>
                         </div>
                     </div>
@@ -67,11 +67,11 @@
 
                         <div class="carousel-caption d-flex flex-column align-items-center justify-content-center">
                             <div class="p-3">
-                                <h1 class="display-4 text-white mb-3">Shop Online at Flat 70% off on Branded Clothes
+                                <h1 class="display-4 text-white mb-3">{{ __('messages.Shop Online at Flat 70% off on Branded Clothes') }}
                                 </h1>
-                                <p class="mx-md-5 px-5">Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
-                                    stet amet amet ndiam elitr ipsum diam</p>
-                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">Shop Now</a>
+                                <p class="mx-md-5 px-5">{{ __('messages.Lorem rebum magna amet lorem magna erat diam stet. Sadips duo
+                                    stet amet amet ndiam elitr ipsum diam') }}</p>
+                                <a class="btn btn-outline-light py-2 px-4 mt-3" href="#">{{ __('messages.Shop Now') }}</a>
                             </div>
                         </div>
                     </div>
@@ -96,25 +96,25 @@
                     <div class="col-lg-3">
                         <div class="box shadow-lg">
                             <div class="fa icon fa-check text-primary m-0 mr-3"></div>
-                            <h2 class="font-weight-semi-bold m-0">Quality Product</h5>
+                            <h2 class="font-weight-semi-bold m-0">{{ __('messages.Quality Product') }}</h5>
                         </div>
                     </div>
                     <div class="col-lg-3 ">
                         <div class="box shadow-lg">
                             <div class="fa icon fa-shipping-fast text-primary m-0 mr-3"></div>
-                            <h2 class="font-weight-semi-bold m-0">Free Shipping</h2>
+                            <h2 class="font-weight-semi-bold m-0">{{ __('messages.Free Shipping') }}</h2>
                         </div>
                     </div>
                     <div class="col-lg-3">
                         <div class="box shadow-lg">
                             <div class="fa icon fa-exchange-alt text-primary m-0 mr-3"></div>
-                            <h2 class="font-weight-semi-bold m-0">14-Day Return</h2>
+                            <h2 class="font-weight-semi-bold m-0">{{ __('messages.14-Day Return') }}</h2>
                         </div>
                     </div>
                     <div class="col-lg-3 ">
                         <div class="box shadow-lg">
                             <div class="fa icon fa-phone-volume text-primary m-0 mr-3"></div>
-                            <h2 class="font-weight-semi-bold m-0">24/7 Support</h5>
+                            <h2 class="font-weight-semi-bold m-0">{{ __('messages.24/7 Support') }}</h5>
                         </div>
                     </div>
                 </div>
@@ -125,7 +125,7 @@
         <section class="section-3">
             <div class="container">
                 <div class="section-title">
-                    <h2>Categories</h2>
+                    <h2>{{ __('messages.Categories') }}</h2>
                 </div>
                 <div class="row pb-3">
                     @if(getCategories()->isNotEmpty())
@@ -140,7 +140,7 @@
                             </div>
                             <div class="right">
                                 <div class="cat-data">
-                                    <h2>{{ $category->name }}</h2>
+                                    <h2> {{ $category->translations->firstWhere('locale', app()->getLocale()) ? $category->translations->firstWhere('locale', app()->getLocale())->name : $category->name }}</h2>
                                 </div>
                             </div>
                         </div>
@@ -187,7 +187,7 @@
         <section class="section-4 pt-5">
             <div class="container">
                 <div class="section-title">
-                    <h2>Featured Products</h2>
+                    <h2>{{ __('messages.Featured Products') }}</h2>
                 </div>
                 <div class="row pb-3">
                     @if($featuredProducts->isNotEmpty())
@@ -207,16 +207,16 @@
                                 <a class="whishlist" href="{{route('products.index')}}"><i class="far fa-heart"></i></a>
 
                                 <div class="product-action">
-                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
-                                <a href="{{route('front.cart')}}"  class="btn btn-primary">Go To Cart</a>
+                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.ADD TO CART') }}</a>
+                                <a href="{{route('front.cart')}}"  class="btn btn-primary">{{ __('messages.Go To Cart') }}</a>
                                  </div>
                                  <br>
                                   <div href="{{route('front.home')}}" >
-                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;Wishlist</a>
+                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.Wishlist') }}</a>
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{$product->title}}</a>
+                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{ $product->translatedName }}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{$product->price}}</strong></span>
                                     @if($product->compare_price > 0)
@@ -326,7 +326,7 @@
 <section class="section-4 pt-5">
             <div class="container">
                 <div class="section-title">
-                    <h2>Leatest Products</h2>
+                    <h2>{{ __('messages.Leatest Products') }}</h2>
                 </div>
                 <div class="row pb-3">
                     @if($latestProducts->isNotEmpty())
@@ -346,15 +346,15 @@
                                 <a class="whishlist" href="222"><i class="far fa-heart"></i></a>
 
                                 <div class="product-action" href="{{route('front.cart')}}">
-                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;ADD TO CART</a>
+                                <a href="javascript:void(0);" onclick="addToCart({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.ADD TO CART') }}</a>
     </div>
     <br>
     <div href="{{route('front.home')}}" >
-                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;Wishlist</a>
+                                     <a href="javascript:void(0);" onclick="addToWishlist({{$product->id}});" class="btn btn-dark"><i class="fas fa-shopping-cart"></i> &nbsp;{{ __('messages.Wishlist') }}</a>
                                 </div>
                             </div>
                             <div class="card-body text-center mt-3">
-                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{$product->title}}</a>
+                                <a class="h6 link" href="{{ route('products.show', $product->slug) }}">{{ $product->translatedName }}</a>
                                 <div class="price mt-2">
                                     <span class="h5"><strong>${{$product->price}}</strong></span>
                                     @if($product->compare_price > 0)
@@ -372,7 +372,7 @@
         <section class="wishlist-section pt-5">
     <div class="container">
         <div class="section-title">
-            <h2>Wishlist</h2>
+            <h2>{{ __('messages.Wishlist') }}</h2>
         </div>
 
         @if(auth()->check() && auth()->user()->wishlists->isNotEmpty())
@@ -406,7 +406,7 @@
         @endforeach
     </div>
 @else
-    <p>Your wishlist is empty.</p>
+    <p>{{ __('messages.Your wishlist is empty.') }}</p>
 @endif
 
     </div>
