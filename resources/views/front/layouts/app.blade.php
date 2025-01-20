@@ -66,6 +66,25 @@
     background-color: #007bff; /* Optional: Add a hover effect (e.g., blue background) */
     color: white; /* Ensure the text stays white on hover */
 }
+#search-results {
+    position: absolute;
+    z-index: 1000;
+    background-color: white;
+    border: 1px solid #ddd;
+    max-height: 300px;
+    overflow-y: auto;
+    width: 100%;
+}
+
+#search-results .dropdown-item {
+    padding: 10px;
+    cursor: pointer;
+}
+
+#search-results .dropdown-item:hover {
+    background-color: #f0f0f0;
+}
+
 </style>
 <header class="bg-dark">
     <div class="container">
@@ -105,16 +124,15 @@
                     </a>
                 </div>
                 <div class="col-lg-6 col-6 text-left  d-flex justify-content-end align-items-center">
-                    <a href="account.php" class="nav-link text-dark">{{ __('messages.My Account') }}</a>
-                    <form action=""> 
-                        <div class="input-group">
-                            <input type="text" placeholder="{{ __('messages.Search For Products') }}" class="form-control"
-                                aria-label="Amount (to the nearest dollar)">
-                            <span class="input-group-text">
-                                <i class="fa fa-search"></i>
-                            </span>
+                    <a href="#" class="nav-link text-dark">{{ __('messages.My Account') }}</a>
+                    <form action="{{ route('search') }}" method="GET" class="d-flex">
+    <input type="text" name="query" id="search-box" class="form-control" placeholder="Search for products, categories, brands..." autocomplete="off" required>
+    <button type="submit" class="btn btn-primary">Search</button>
+</form>
                         </div>
-                    </form>
+                        <div id="search-results" class="dropdown-menu" style="display: none; position: absolute; width: 100%; z-index: 1000;">
+    <!-- Results will appear here dynamically -->
+</div>
                 </div>
             </div>
         </div>
@@ -250,25 +268,73 @@
     }
 });
 <script type="text/javascript">
-function addToWishlist(productId) {
-    $.ajax({
-        url: '/wishlist/add',
-        method: 'POST',
-        data: {
-            id: productId,
-            _token: '{{ csrf_token() }}' // Include CSRF token
-        },
-        success: function(response) {
-            alert(response.message); // Display the success or failure message
-        },
-        error: function(xhr, status, error) {
-            alert("An error occurred");
-        }
-    });
-}
+    $(document).ready(function() {
+        $('#search-box').on('input', function() {
+            var query = $(this).val();
+            
+            // Only trigger search if query length is greater than 2 characters
+            if(query.length > 2) {
+                $.ajax({
+                    url: "{{ route('search') }}",  // Ensure this points to the correct route
+                    method: 'GET',
+                    data: { query: query },
+                    success: function(response) {
+                        // Clear previous results
+                        $('#search-results').empty();
 
+                        // Show products in dropdown
+                        if (response.products.length > 0) {
+                            response.products.forEach(function(product) {
+                                $('#search-results').append(
+                                    `<a href="/product/${product.slug}" class="dropdown-item">${product.title}</a>`
+                                );
+                            });
+                        }
+
+                        // Show categories in dropdown
+                        if (response.categories.length > 0) {
+                            response.categories.forEach(function(category) {
+                                $('#search-results').append(
+                                    `<a href="/category/${category.slug}" class="dropdown-item">${category.name}</a>`
+                                );
+                            });
+                        }
+
+                        // Show brands in dropdown
+                        if (response.brands.length > 0) {
+                            response.brands.forEach(function(brand) {
+                                $('#search-results').append(
+                                    `<a href="/brand/${brand.slug}" class="dropdown-item">${brand.name}</a>`
+                                );
+                            });
+                        }
+
+                        // If no results found, hide the dropdown
+                        if (response.products.length === 0 && response.categories.length === 0 && response.brands.length === 0) {
+                            $('#search-results').hide();
+                        } else {
+                            $('#search-results').show();  // Show dropdown with results
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching search results:", error);
+                        $('#search-results').hide();  // Hide dropdown on error
+                    }
+                });
+            } else {
+                $('#search-results').hide();  // Hide dropdown if query length is less than 3 characters
+            }
+        });
+
+        // Hide dropdown when clicking outside of the search box and dropdown
+        $(document).click(function(e) {
+            if (!$(e.target).closest('#search-results, #search-box').length) {
+                $('#search-results').hide();
+            }
+        });
+    });
 </script>
 
-    </script>
+
 </body>
 

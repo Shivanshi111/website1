@@ -14,6 +14,29 @@ class FrontController extends Controller
        $data['latestProducts'] = $latestProducts;
         return view('front.home',$data);
     }
+
+//     public function search(Request $request)
+//     {
+//         $query = $request->input('query'); // Get the search input
+        
+//         // Search Products
+//         $products = Product::where('title', 'LIKE', "%{$query}%")
+//             ->orWhere('description', 'LIKE', "%{$query}%")
+//             ->where('status', 1) // Ensure the product is active
+//             ->get();
+
+//         // Search Categories
+//         $categories = Category::where('name', 'LIKE', "%{$query}%")
+//             ->get();
+
+//         // Search Brands
+//         $brands = Brand::where('name', 'LIKE', "%{$query}%")
+//             ->get();
+
+//         // Pass all results to the view
+//         return view('front.search_results', compact('products', 'categories', 'brands', 'query'));
+//     }
+// }
 //     public function showFeaturedProducts()
 // {
 //     // Fetch featured products from the database
@@ -24,5 +47,4 @@ class FrontController extends Controller
 // }
 
    
-
 }

@@ -11,10 +11,23 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class CategoryController extends Controller
 {
-    public function index(){
-        $category = Category::latest()->paginate(5);
-        return view('admin.category.category_list', compact('category'));
+    public function index(Request $request)
+{
+    $query = $request->get('query'); // Get the search query
+    // Perform the search query
+    $category = Category::where('name', 'LIKE', "%$query%")
+                       ->paginate(5);
+
+    // If it's an AJAX request, return only the view without the full page
+    if ($request->ajax()) {
+        return response()->json([
+            'html' => view('admin.category.category_search', compact('category'))->render()
+        ]);
     }
+
+    return view('admin.category.category_list', compact('category'));
+}
+
 
     public function create() {
         return view('admin.category.create');

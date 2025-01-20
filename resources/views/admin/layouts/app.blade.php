@@ -14,9 +14,13 @@
 		<link rel="stylesheet" href="{{ asset('admin-assets/plugins/summernote/summernote.min.css')}}">
 		<link rel="stylesheet" href="{{ asset('admin-assets/css/custom.css')}}">
 		<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	
+		<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- Other head elements -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
+</head>
 
-	</head>
+
+	
 	<body class="hold-transition sidebar-mini">
 		<!-- Site wrapper -->
 		<div class="wrapper">
@@ -89,6 +93,7 @@
 		<script src="{{ asset('admin-assets/js/demo.js')}}"></script>
 		<script src="{{ asset('admin-assets/plugins/dropzone/min/dropzone.min.js')}}"></script>
 		<script src="{{ asset('admin-assets/plugins/summernote/summernote.min.js')}}"></script>
+		<script src="{{ asset('front-assets/js/custom.js') }}"></script>
 		<script>
 			window.onscroll = function() {myFunction()};
 			var navbar = document.getElementById("navbar");

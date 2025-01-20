@@ -16,9 +16,20 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class BrandsController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $brand = Brand::latest()->paginate(5);
+        // $brand = Brand::latest()->paginate(5);
+        $query = $request->get('query'); // Get the search query
+        // Perform the search query
+        $brand = Brand::where('name', 'LIKE', "%$query%")
+                           ->paginate(5);
+    
+        // If it's an AJAX request, return only the view without the full page
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.brand.brand_search', compact('brand'))->render()
+            ]);
+        }
         return view('admin.brand.brand_list', compact('brand'));
     }
 

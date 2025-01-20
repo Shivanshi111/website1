@@ -15,10 +15,20 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 class ProductController extends Controller
 {
     // Display a list of products
-    public function index()
-    {
-        $products = Product::with(['category', 'subcategory', 'brand'])->get();
-
+    public function index(Request $request){
+        $query = $request->get('query');
+    
+        // Perform the search query
+        $products = Product::where('title', 'LIKE', "%$query%")
+                           ->paginate(5);
+    
+        // If it's an AJAX request, return only the view without the full page
+        if ($request->ajax()) {
+            return response()->json([
+                'html' => view('admin.product.product_search', compact('products'))->render()
+            ]);
+        }
+        // dd('This is not an AJAX request');
         return view('admin.product.product_list', compact('products'));
     }
 

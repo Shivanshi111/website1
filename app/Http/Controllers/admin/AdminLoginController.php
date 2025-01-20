@@ -11,7 +11,7 @@ class AdminLoginController extends Controller
 {
     public function index()
     {
-        return view('admin.login'); // Show the login form
+        return view('front.account.login'); // Show the login form
     }
 
     public function authenticate(Request $request)
@@ -44,14 +44,14 @@ class AdminLoginController extends Controller
              else {
                 Auth::logout(); // Logout non-admin users
                 return redirect()
-                    ->route('admin.login')
+                    ->route('account.login')
                     ->with('error', 'You are not authorized to access the admin panel.');
             }
         }
 
         // If authentication fails
         return redirect()
-            ->route('admin.login')
+            ->route('account.login')
             ->with('error', 'Invalid email or password.')
             ->withInput($request->only('email'));
     }

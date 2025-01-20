@@ -83,7 +83,7 @@
                         <div class="tab-content" id="myTabContent">
                             <div class="tab-pane fade show active" id="description" role="tabpanel" aria-labelledby="description-tab">
                                 <p>
-                                {{$product->description}}
+                                {{ $product->translatedDescription }}
                                 </p>
                             </div>
                             <div class="tab-pane fade" id="shipping" role="tabpanel" aria-labelledby="shipping-tab">

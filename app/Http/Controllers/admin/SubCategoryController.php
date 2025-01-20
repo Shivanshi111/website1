@@ -13,9 +13,21 @@ use Stichoza\GoogleTranslate\GoogleTranslate;
 
 class SubCategoryController extends Controller
 {
-  public function index()
+  public function index(Request $request)
 {
-    $subcategories = Subcategories::with('category')->paginate(5);
+    // $subcategories = Subcategories::with('category')->paginate(5);
+    $query = $request->get('query'); // Get the search query
+    // Perform the search query
+    $subcategories = Subcategories::with('category')
+    ->where('name', 'LIKE', "%$query%")
+    ->paginate(5);
+
+    // If it's an AJAX request, return only the view without the full page
+    if ($request->ajax()) {
+        return response()->json([
+            'html' => view('admin.category.subcategory_search', compact('subcategories'))->render()
+        ]);
+    }
     return view('admin.category.subcategory', compact('subcategories'));
 }
 
